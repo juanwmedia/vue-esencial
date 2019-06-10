@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue</title>
+</head>
+<body>
+    <div id="app">
+        <!-- <form v-on:submit.prevent="guardarTarea"> -->
+        <form>
+            <input type="text" v-model="nuevaTarea" placeholder="Tarea"
+                    @keyUp="guardarTarea">
+            <input type="submit" value="Guardar tarea">
+        </form>
+        <br>
+        <input type="range" v-model="tiempo">{{ tiempo }}
+        <br>
+        <input type="search" v-model="busqueda" placeholder="Buscar tarea">
+        <hr>
+        <li v-for="tarea in filtroTareas">{{ tarea.nombre }} - {{ tarea.tiempo }}</li>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script>
+        // Tradicional
+        // window.onload = () => {
+        //     const form = document.querySelector("form");
+        //     const input = document.querySelector("input[type=text]");
+        //     form.onsubmit = (evento) => {
+        //         evento.preventDefault();
+        //         app.tareas.unshift({
+        //             nombre: input.value,
+        //             tiempo: 10,
+        //         });
+        //         input.value = null;
+        //     }
+        // };
+
+        const app = new Vue({
+            el: "#app",
+            data: {
+                nuevaTarea: '',
+                tiempo: 0,
+                busqueda: '',
+                tareas: [
+                    {nombre: 'Aprender JavaScript moderno', tiempo: 3},
+                    {nombre: 'Aprender Vue.js', tiempo: 7},
+                    {nombre: 'Reparar el coche', tiempo: 22},
+                    {nombre: 'Viajar más', tiempo: 16},
+                    {nombre: 'Comprar la cena', tiempo: 12},
+                    {nombre: 'Mejorar como desarrollador', tiempo: 9},
+                    {nombre: 'Dar un curso', tiempo: 14},
+                ]
+            },
+            methods: {
+                guardarTarea() {
+                    this.tareas.unshift({
+                        nombre: this.nuevaTarea,
+                        tiempo: Math.floor(Math.random() * 100),
+                    });
+                    // this.nuevaTarea = null;
+                }
+            },
+            computed: {
+                filtroTareas() {
+                    return this.tareas.filter(tarea => {
+                        return tarea.tiempo <= this.tiempo && tarea.nombre.includes(this.busqueda);
+                    })
+                }
+            }
+        });
+        Vue.config.devtools = true;
+    </script>
+    </script>
+</body>
+</html>
