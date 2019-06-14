@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue</title>
+</head>
+<body>
+    <div id="app">
+        <ul>
+            <li v-for="usuario in usuarios">
+                {{ usuario.name }}
+            </li>
+        </ul>
+        <pre>{{ $data }}</pre>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script>
+        const vm = new Vue({
+            created() {
+                var url ="https://jsonplaceholder.typicode.com/users";
+                fetch(url)
+                    .then(respuesta => respuesta.json())
+                        .then(respuesta => this.usuarios = respuesta);
+            },
+            el: "#app",
+            data: {
+                usuarios: [],
+            },
+        });
+        Vue.config.devtools = true;
+    </script>
+    </script>
+</body>
+</html>
