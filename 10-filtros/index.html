@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue</title>
+</head>
+<body>
+    <main id="app">
+        <ul>
+            <li v-for="usuario in nombreCompleto"> {{ usuario | mayusculas | acortado(10) }}</li>
+        </ul>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script>
+        new Vue({
+            el: "#app",
+            created() {
+                fetch(this.url)
+                    .then(respuesta => respuesta.json())
+                        .then(respuesta => this.usuarios = respuesta.results.map(usuario => usuario.name));
+            },
+            data: {
+                url: 'https://randomuser.me/api/?results=50',
+                usuarios: [],
+            },
+            computed: {
+                nombreCompleto() {
+                    return this.usuarios.map(usuario => `Nombre: ${usuario.title}: ${usuario.first} ${usuario.last}`)
+                }
+            },
+            filters: {
+                mayusculas(datos) {
+                    return datos.toUpperCase();
+                },
+                acortado(datos, cantidad) {
+                    return datos.substring(0, cantidad) + '...';
+                }
+            }
+        });
+        Vue.config.devtools = true;
+    </script>
+</body>
+</html>
